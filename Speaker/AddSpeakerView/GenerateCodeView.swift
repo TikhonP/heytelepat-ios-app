@@ -36,7 +36,7 @@ struct GenerateCodeView: View, CustomPicker {
                     Divider()
                     wifiSsidField
                         .padding([.leading, .top, .trailing])
-                    PasswordField(password: $generateCodeViewModel.password)
+                    PasswordFieldView(password: $generateCodeViewModel.password)
                         .padding()
                     if generateCodeViewModel.showLoader {
                         if generateCodeViewModel.playing {
@@ -109,6 +109,6 @@ struct GenerateCodeView: View, CustomPicker {
 
 struct GenerateCodeView_Previews: PreviewProvider {
     static var previews: some View {
-        GenerateCodeView(doctor: doctorResponse(name: "Имя", patient_name: "Имя пациента", doctor_name: "Имя доктора", specialty: "Специальность доктора", clinic: doctorResponseClinic(id: 12, name: "Клиника", timezone: "timezone", logo_id: nil, full_logo_id: nil, nonsquare_logo_id: nil, video_enabled: false), mainDoctor: "mainDoctor", startDate: "", endDate: "", contract: 3808, photo_id: 2, archive: false, sent: 0, received: 2, short_name: "Короткое имя", state: "state", number: "", unread: nil, is_online: true, role: "роль"))
+        GenerateCodeView(doctor: doctorResponse.preview)
     }
 }

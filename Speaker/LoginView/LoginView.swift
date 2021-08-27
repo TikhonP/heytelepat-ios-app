@@ -8,24 +8,27 @@
 import SwiftUI
 
 struct LoginView: View {
-    @ObservedObject var networkMonitor: NetworkMonitor
-    @ObservedObject var rootViewModel: RootViewModel
+    @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var rootViewModel: RootViewModel
     
     @ObservedObject var loginViewModel = LoginViewModel()
     
     var body: some View {
+        if networkMonitor.isConnected {
+            mainBody
+        } else {
+            OfflineView()
+        }
+    }
+    
+    var mainBody: some View {
         VStack {
-            LogoIconLoginView()
-            TitleLoginView()
+            logoIconLoginView
+            titleLoginView
             Spacer()
             usernameField
-            PasswordField(password: $loginViewModel.password)
+            PasswordFieldView(password: $loginViewModel.password)
             Spacer()
-            
-            if !networkMonitor.isConnected {
-                CardView(text: "Интернет не доступен")
-                Spacer()
-            }
             
             if loginViewModel.showError {
                 CardView(text: loginViewModel.error)
@@ -35,7 +38,7 @@ struct LoginView: View {
             if loginViewModel.showLoader {
                 ProgressView()
             } else {
-                Button(action: commitButtonAction, label: { ButtonLoginView() })
+                Button(action: commitButtonAction, label: { buttonLoginView })
                     .disabled(commitButtonIsDisabled)
                     .opacity(commitButtonIsDisabled ? 0.5 : 1)
                     .animation(.default)
@@ -63,79 +66,26 @@ struct LoginView: View {
             .autocapitalization(.none)
             .disableAutocorrection(true)
     }
-}
-
-
-#if DEBUG
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView(networkMonitor: NetworkMonitor(), rootViewModel: RootViewModel())
-    }
-}
-#endif
-
-
-struct PasswordField: View {
-    @Binding var password: String
     
-    @State var hidePassword: Bool = true
-    
-    var body: some View {
-        ZStack {
-            if hidePassword {
-                SecureField("Пароль", text: $password)
-                    .padding()
-                    .background(Color("lightGray"))
-                    .cornerRadius(5.0)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-                    .textContentType(.password)
-            } else {
-                TextField("Пароль", text: $password)
-                    .padding()
-                    .background(Color("lightGray"))
-                    .cornerRadius(5.0)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-                    .textContentType(.password)
-            }
-            
-            HStack {
-                Spacer()
-                Button(action: { hidePassword.toggle() }, label: {
-                    Image(systemName: hidePassword ? "eye.slash.fill" : "eye.fill")
-                        .foregroundColor(.gray)
-                })
-                .padding()
-            }
-        }
-    }
-}
-
-struct LogoIconLoginView: View {
-    var body: some View {
+    var logoIconLoginView: some View {
         Image("loginIcon")
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: 150, height: 150)
-            .clipShape(Circle())
+            //            .clipShape(Circle())
             //            .shadow(radius: 10)
             .padding()
     }
-}
-
-struct TitleLoginView: View {
-    var body: some View {
+    
+    var titleLoginView: some View {
         Text("Medsenger Speaker")
             .font(.largeTitle)
             .fontWeight(.semibold)
             .multilineTextAlignment(.center)
             .padding()
     }
-}
-
-struct ButtonLoginView: View {
-    var body: some View {
+    
+    var buttonLoginView: some View {
         Text("Войти")
             .font(.headline)
             .foregroundColor(.white)
@@ -159,3 +109,16 @@ struct CardView: View {
     }
 }
 
+
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            LoginView()
+                .environmentObject(NetworkMonitor())
+                .environmentObject(RootViewModel())
+            CardView(text: "Card text")
+                .previewLayout(PreviewLayout.sizeThatFits)
+                .padding()
+        }
+    }
+}

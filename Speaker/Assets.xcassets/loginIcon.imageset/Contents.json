@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "medsenger_presentation (перетянутый).png",
+      "filename" : "fcm_push_icon-1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "fcm_push_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "fcm_push_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

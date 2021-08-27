@@ -8,21 +8,26 @@
 import SwiftUI
 
 struct SpeakersView: View {
+    @EnvironmentObject var networkMonitor: NetworkMonitor
+    
     @ObservedObject var speakersViewModel = SpeakersViewModel()
     
     var body: some View {
-        ZStack {
-            if speakersViewModel.responseData == nil {
-                ProgressView()
-                    .scaleEffect(2)
-            } else {
-                speakers
+        if networkMonitor.isConnected {
+            ZStack {
+                if speakersViewModel.responseData == nil {
+                    CustomProgressView()
+                } else {
+                    speakers
+                }
             }
+            .alert(isPresented: $speakersViewModel.requestError, content: {
+                Alert(title: Text("Ошибка загрузки данных."))
+            })
+            .onAppear(perform: speakersViewModel.fetchData)
+        } else {
+            OfflineView()
         }
-        .alert(isPresented: $speakersViewModel.requestError, content: {
-            Alert(title: Text("Ошибка загрузки данных."))
-        })
-        .onAppear(perform: speakersViewModel.fetchData)
     }
     
     var speakers: some View {
@@ -46,12 +51,6 @@ struct SpeakersView: View {
     }
 }
 
-struct SpeakersView_Previews: PreviewProvider {
-    static var previews: some View {
-        DoctorNavigationItem(doctor: doctorResponse(name: "Имя", patient_name: "Имя пациента", doctor_name: "Имя доктора", specialty: "Специальность доктора", clinic: doctorResponseClinic(id: 12, name: "Клиника", timezone: "timezone", logo_id: nil, full_logo_id: nil, nonsquare_logo_id: nil, video_enabled: false), mainDoctor: "mainDoctor", startDate: "", endDate: "", contract: 3808, photo_id: 2, archive: false, sent: 0, received: 2, short_name: "Короткое имя", state: "state", number: "", unread: nil, is_online: true, role: "роль"))
-    }
-}
-
 struct DoctorNavigationItem: View {
     let doctor: doctorResponse
     
@@ -62,9 +61,9 @@ struct DoctorNavigationItem: View {
             metaView
             Spacer()
         }
-        .background(Color.gray.opacity(0.6))
+        .background(Color.accentColor)
         .cornerRadius(10)
-        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+        .shadow(radius: 10)
         .padding()
     }
     
@@ -128,3 +127,15 @@ struct DoctorImageView: View {
     }
 }
 
+
+struct SpeakersView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            SpeakersView()
+                .environmentObject(NetworkMonitor())
+            DoctorNavigationItem(doctor: doctorResponse.preview)
+                .previewLayout(PreviewLayout.sizeThatFits)
+                .padding()
+        }
+    }
+}

@@ -39,6 +39,11 @@ struct doctorResponse: Decodable, Identifiable {
     let role: String
 }
 
+extension doctorResponse {
+  /// Default Doctor
+  static let preview = doctorResponse(name: "Имя", patient_name: "Имя пациента", doctor_name: "Имя доктора", specialty: "Специальность доктора", clinic: doctorResponseClinic(id: 12, name: "Клиника", timezone: "timezone", logo_id: nil, full_logo_id: nil, nonsquare_logo_id: nil, video_enabled: false), mainDoctor: "mainDoctor", startDate: "", endDate: "", contract: 3808, photo_id: 2, archive: false, sent: 0, received: 2, short_name: "Короткое имя", state: "state", number: "", unread: nil, is_online: true, role: "роль")
+}
+
 struct doctorResponseClinic: Decodable {
     let id: Int
     let name: String

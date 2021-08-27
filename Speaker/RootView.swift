@@ -21,12 +21,36 @@ struct RootView: View {
     @ObservedObject var rootViewModel = RootViewModel()
     
     var body: some View {
-        if rootViewModel.tokenExists {
-            MainView(networkMonitor: networkMonitor, rootViewModel: rootViewModel)
-                .transition(AnyTransition.scale.animation(.easeInOut(duration: 1)))
-        } else {
-            LoginView(networkMonitor: networkMonitor, rootViewModel: rootViewModel)
-                .transition(AnyTransition.scale.animation(.easeInOut(duration: 1)))
+        ZStack {
+            if rootViewModel.tokenExists {
+                mainView
+                    .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
+            } else {
+                LoginView()
+                    .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3)))
+            }
+        }
+        .environmentObject(networkMonitor)
+        .environmentObject(rootViewModel)
+    }
+    
+    var mainView: some View {
+        TabView {
+            SpeakersView()
+                .tabItem {
+                    Image(systemName: "eyes")
+                    Text("Колонка")
+                }
+            CurrentSpeakers()
+                .tabItem {
+                    Image(systemName: "speaker.wave.2.circle.fill")
+                    Text("Мои устройства")
+                }
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.crop.circle")
+                    Text("Профиль")
+                }
         }
     }
 }

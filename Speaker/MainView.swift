@@ -13,26 +13,12 @@ struct MainView: View {
     @ObservedObject var rootViewModel: RootViewModel
     
     var body: some View {
-        TabView {
-            SpeakersView()
-                .tabItem {
-                    Image(systemName: "eyes")
-                    Text("Колонка")
-                }
-            ProfileView(rootViewModel: rootViewModel)
-                .tabItem {
-                    Image(systemName: "person.crop.circle")
-                    Text("Профиль")
-                }
-        }
+        
     }
 }
 
-
-#if DEBUG
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView(networkMonitor: NetworkMonitor(), rootViewModel: RootViewModel())
     }
 }
-#endif
