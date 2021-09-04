@@ -19,6 +19,7 @@ final class RootViewModel: ObservableObject {
 struct RootView: View {
     @ObservedObject var networkMonitor = NetworkMonitor()
     @ObservedObject var rootViewModel = RootViewModel()
+    @ObservedObject var speakersViewModel = SpeakersViewModel()
     
     var body: some View {
         ZStack {
@@ -32,6 +33,7 @@ struct RootView: View {
         }
         .environmentObject(networkMonitor)
         .environmentObject(rootViewModel)
+        .environmentObject(speakersViewModel)
     }
     
     var mainView: some View {

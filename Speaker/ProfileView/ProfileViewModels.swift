@@ -12,7 +12,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var profileData: getTokenResponse?
     @Published var fetchDataError: Bool = false
     
-    func fetchProfileData() {
+    func fetchProfileData(rootViewModel: RootViewModel) {
         if profileData == nil {
             let requestModel = getTokenRequest(
                 email: "self.username",
@@ -29,8 +29,14 @@ final class ProfileViewModel: ObservableObject {
                 case .success(let response):
                     self.profileData = response
                 case .failure(let error):
-                    self.fetchDataError = true
-                    print("An error occured \(error.localizedDescription) \(error)")
+                    switch error {
+                    case .IncorrectPassword:
+                        KeyChainTokenViewModel().deleteTokens()
+                        rootViewModel.updateProperty()
+                    default:
+                        print("An error occured \(error.localizedDescription) \(error)")
+                        self.fetchDataError = true
+                    }
                 }
             })
         }

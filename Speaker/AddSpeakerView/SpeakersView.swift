@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SpeakersView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
-    
-    @ObservedObject var speakersViewModel = SpeakersViewModel()
+    @EnvironmentObject var speakersViewModel: SpeakersViewModel
     
     var body: some View {
         if networkMonitor.isConnected {

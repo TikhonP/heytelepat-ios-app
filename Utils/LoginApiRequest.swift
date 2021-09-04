@@ -8,6 +8,7 @@
 import Foundation
 
 enum APIError: Error {
+    case IncorrectToken
     case UserIsNotActivated
     case IncorrectData
     case IncorrectPassword
@@ -58,6 +59,8 @@ struct LoginApiRequest {
                             completion(.failure(.IncorrectData))
                         } else if messagesData.error[0] == "Incorrect password" {
                             completion(.failure(.IncorrectPassword))
+                        } else if messagesData.error[0] == "Incorrect token" {
+                            completion(.failure(.IncorrectToken))
                         } else {
                             completion(.failure(.badRequest))
                         }

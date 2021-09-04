@@ -69,7 +69,7 @@ struct ProfileView: View {
             .alert(isPresented: $profileViewModel.fetchDataError, content: {
                 Alert(title: Text("Ошибка загрузки данных."))
             })
-            .onAppear(perform: profileViewModel.fetchProfileData)
+            .onAppear(perform:  { profileViewModel.fetchProfileData(rootViewModel: rootViewModel) })
         } else {
             OfflineView()
         }

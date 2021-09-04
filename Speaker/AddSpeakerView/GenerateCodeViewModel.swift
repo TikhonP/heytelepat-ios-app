@@ -102,23 +102,24 @@ final class GenerateCodeViewModel: ObservableObject {
                     let jsonData = try JSONEncoder().encode(credentialsForSpeaker)
                     let jsonString = String(data: jsonData, encoding: .utf8)!
                     
-                    let wavDataUrl = "https://ggwave-to-file.ggerganov.com/?m=\(jsonString)"
+                    let wavDataUrl = "https://ggwave-to-file.ggerganov.com/?m=\(jsonString)&p=2"
                     print(wavDataUrl)
                     
                     checkBookFileExists(withLink: wavDataUrl){ [weak self] downloadedURL in
                         guard let self = self else { return }
                         self.playing = true
                         self.play(url: downloadedURL)
+                        //                        self.removeFile(url: downloadedURL)
                         self.showLoader = false
                     }
                 } catch {
-                    print("Encodicng speaker credentials error \(error)")
+                    print("Encodicng speaker credentials error \(error.localizedDescription)")
                     self.requestError = true
                 }
             } catch {
                 self.requestError = true
                 self.showLoader = false
-                print("Decoding error \(error)")
+                print("Decoding error \(error.localizedDescription)")
                 return
             }
         } catch {
@@ -133,7 +134,7 @@ final class GenerateCodeViewModel: ObservableObject {
             if let documentDirectory = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create: false) {
                 
                 let filePath = documentDirectory.appendingPathComponent("\(UUID().uuidString).wav", isDirectory: false)
-
+                
                 downloadFile(withUrl: url, andFilePath: filePath, completion: completion)
             } else {
                 print("Document directory error")
@@ -162,18 +163,32 @@ final class GenerateCodeViewModel: ObservableObject {
         print("playing \(url)")
         
         do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.prepareToPlay()
-            //            audioPlayer?.delegate = self
-            audioPlayer?.play()
-            //            let percentage = (audioPlayer?.currentTime ?? 0)/(audioPlayer?.duration ?? 0)
-            
-            
-            
-        } catch let error {
-            audioPlayer = nil
-            print("Error playing \(error)")
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+        } catch(let error) {
+            print(error.localizedDescription)
         }
         
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.play()
+            //            let percentage = (audioPlayer?.currentTime ?? 0)/(audioPlayer?.duration ?? 0)
+            //            while audioPlayer?.isPlaying ?? false {  }
+        } catch let error {
+            audioPlayer = nil
+            print("Error playing \(error.localizedDescription)")
+        }
+        
+    }
+    
+    func removeFile(url: URL) {
+        print("Deleting element...\(url)")
+        
+        do {
+            try FileManager.default.removeItem(at: url)
+        } catch {
+            print("Could not delete file: \(error.localizedDescription)")
+        }
     }
 }
