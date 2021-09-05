@@ -20,6 +20,7 @@ struct RootView: View {
     @ObservedObject var networkMonitor = NetworkMonitor()
     @ObservedObject var rootViewModel = RootViewModel()
     @ObservedObject var speakersViewModel = SpeakersViewModel()
+    @ObservedObject var currentSpeakersViewModel = CurrentSpeakersViewModel()
     
     var body: some View {
         ZStack {
@@ -34,19 +35,20 @@ struct RootView: View {
         .environmentObject(networkMonitor)
         .environmentObject(rootViewModel)
         .environmentObject(speakersViewModel)
+        .environmentObject(currentSpeakersViewModel)
     }
     
     var mainView: some View {
         TabView {
-            SpeakersView()
-                .tabItem {
-                    Image(systemName: "eyes")
-                    Text("Колонка")
-                }
             CurrentSpeakers()
                 .tabItem {
                     Image(systemName: "speaker.wave.2.circle.fill")
-                    Text("Мои устройства")
+                    Text("Мои Устройства")
+                }
+            SpeakersView()
+                .tabItem {
+                    Image(systemName: "waveform.path.badge.plus")
+                    Text("Добавить")
                 }
             ProfileView()
                 .tabItem {

@@ -8,6 +8,41 @@
 import Foundation
 
 
+func listOfDoctorsRequest() -> Array<doctorResponse>? {
+    var resourceURLComponents = URLComponents()
+    resourceURLComponents.scheme = "https"
+    resourceURLComponents.host = medsengerApiDomain
+    resourceURLComponents.path = "/api/client/doctors"
+    resourceURLComponents.queryItems = [
+        URLQueryItem(name: "api_token", value: medsengerApiKey),
+    ]
+    
+    guard let resourceURL = resourceURLComponents.url else { fatalError("Cannot create url for doctor request.") }
+    
+    var urlRequest = URLRequest(url: resourceURL)
+    urlRequest.httpMethod = "GET"
+    
+    let (data, response, _) = URLSession.shared.syncRequest(with: urlRequest)
+    
+    guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
+        #if DEBUG
+        print("Unknown error while doctors request")
+        #endif
+        return nil
+    }
+    
+    do {
+        let response = try JSONDecoder().decode(doctorsResponse.self, from: jsonData)
+        return response.data
+    } catch {
+        #if DEBUG
+        print("Decoding error: \(error.localizedDescription).")
+        print("Data \(String(decoding: jsonData, as: UTF8.self))")
+        #endif
+        return nil
+    }
+}
+
 final class SpeakersViewModel: ObservableObject {
     @Published var responseData: Array<doctorResponse>?
     @Published var requestError: Bool = false
@@ -16,41 +51,14 @@ final class SpeakersViewModel: ObservableObject {
         if responseData == nil {
             requestError = false
             
-            var resourceURLComponents = URLComponents()
-            resourceURLComponents.scheme = "https"
-            resourceURLComponents.host = medsengerApiDomain
-            resourceURLComponents.path = "/api/client/doctors"
-            resourceURLComponents.queryItems = [
-                URLQueryItem(name: "api_token", value: medsengerApiKey),
-            ]
-            
-            guard let resourceURL = resourceURLComponents.url else { fatalError("Cannot create url for doctor request.") }
-            
-            var urlRequest = URLRequest(url: resourceURL)
-            urlRequest.httpMethod = "GET"
-            
-            URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-                DispatchQueue.main.async {
-                    guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
-                        self.requestError = true
-                        #if DEBUG
-                        print("Unknown error while doctors request")
-                        #endif
-                        return
-                    }
-                    
-                    do {
-                        let response = try JSONDecoder().decode(doctorsResponse.self, from: jsonData)
-                        self.responseData = response.data
-                    } catch {
-                        self.requestError = true
-                        #if DEBUG
-                        print("Decoding error: \(error).")
-                        print("Data \(String(decoding: jsonData, as: UTF8.self))")
-                        #endif
-                    }
+            DispatchQueue.main.async {
+                let response = listOfDoctorsRequest()
+                if response == nil {
+                    self.requestError = true
+                } else {
+                    self.responseData = response
                 }
-            }.resume()
+            }
         }
     }
 }

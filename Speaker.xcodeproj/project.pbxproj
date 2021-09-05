@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		430ECAB426D4E46200E69745 /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430ECAB326D4E46200E69745 /* CustomPickerView.swift */; };
 		430ECAB626D4E46D00E69745 /* CustomPickerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430ECAB526D4E46D00E69745 /* CustomPickerTextView.swift */; };
-		43399CD226D67FD20054B846 /* AddSpeakerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43399CD126D67FD20054B846 /* AddSpeakerRequest.swift */; };
+		43399CD226D67FD20054B846 /* SpeakerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43399CD126D67FD20054B846 /* SpeakerRequest.swift */; };
 		436B67E126D13738007335D7 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436B67E026D13738007335D7 /* AsyncImageView.swift */; };
 		4379546126D45582009A570A /* GenerateCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4379546026D45582009A570A /* GenerateCodeViewModel.swift */; };
 		43BDAEE726CE7B6900D305CE /* SpeakerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BDAEE626CE7B6900D305CE /* SpeakerApp.swift */; };
@@ -35,6 +35,7 @@
 		43D5BC7426D3B0E500067FEB /* SpeakersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5BC7326D3B0E500067FEB /* SpeakersViewModel.swift */; };
 		43D5BC7626D3B6F700067FEB /* DoctorsRequestModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5BC7526D3B6F700067FEB /* DoctorsRequestModels.swift */; };
 		43D5BC7826D4054C00067FEB /* GenerateCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D5BC7726D4054C00067FEB /* GenerateCodeView.swift */; };
+		43DD199D26E38CB300224FDE /* CurrentSpeakersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DD199C26E38CB300224FDE /* CurrentSpeakersViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +43,7 @@
 		430ECAB526D4E46D00E69745 /* CustomPickerTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPickerTextView.swift; sourceTree = "<group>"; };
 		430ECAB726D4EDB500E69745 /* Speaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Speaker.entitlements; sourceTree = "<group>"; };
 		430ECAB926D4EDB500E69745 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
-		43399CD126D67FD20054B846 /* AddSpeakerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSpeakerRequest.swift; sourceTree = "<group>"; };
+		43399CD126D67FD20054B846 /* SpeakerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerRequest.swift; sourceTree = "<group>"; };
 		436B67E026D13738007335D7 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		4379546026D45582009A570A /* GenerateCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateCodeViewModel.swift; sourceTree = "<group>"; };
 		43BDAEE326CE7B6900D305CE /* Speaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Speaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +69,7 @@
 		43D5BC7326D3B0E500067FEB /* SpeakersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakersViewModel.swift; sourceTree = "<group>"; };
 		43D5BC7526D3B6F700067FEB /* DoctorsRequestModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorsRequestModels.swift; sourceTree = "<group>"; };
 		43D5BC7726D4054C00067FEB /* GenerateCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateCodeView.swift; sourceTree = "<group>"; };
+		43DD199C26E38CB300224FDE /* CurrentSpeakersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentSpeakersViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +154,7 @@
 			children = (
 				43BDAF1226CE935800D305CE /* LoginRequestsModels.swift */,
 				43D5BC7526D3B6F700067FEB /* DoctorsRequestModels.swift */,
-				43399CD126D67FD20054B846 /* AddSpeakerRequest.swift */,
+				43399CD126D67FD20054B846 /* SpeakerRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -203,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				43D0E4E626D920B9005897F8 /* CurrentSpeakers.swift */,
+				43DD199C26E38CB300224FDE /* CurrentSpeakersViewModel.swift */,
 			);
 			path = CurrentSpeakersView;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				43D5BC7626D3B6F700067FEB /* DoctorsRequestModels.swift in Sources */,
 				4379546126D45582009A570A /* GenerateCodeViewModel.swift in Sources */,
 				43D5BC7426D3B0E500067FEB /* SpeakersViewModel.swift in Sources */,
+				43DD199D26E38CB300224FDE /* CurrentSpeakersViewModel.swift in Sources */,
 				436B67E126D13738007335D7 /* AsyncImageView.swift in Sources */,
 				43BDAF0826CE8A6700D305CE /* RootView.swift in Sources */,
 				43D5BC7226D3B05000067FEB /* SpeakersView.swift in Sources */,
@@ -306,7 +310,7 @@
 				43D0E4EC26D92716005897F8 /* PasswordFieldView.swift in Sources */,
 				43D5BC6E26D2B7F300067FEB /* ProfileView.swift in Sources */,
 				43BDAF1326CE935800D305CE /* LoginRequestsModels.swift in Sources */,
-				43399CD226D67FD20054B846 /* AddSpeakerRequest.swift in Sources */,
+				43399CD226D67FD20054B846 /* SpeakerRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,7 +449,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.medsenger.speaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -469,7 +473,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.medsenger.speaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

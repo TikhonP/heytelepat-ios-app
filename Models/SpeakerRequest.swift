@@ -21,3 +21,10 @@ struct CredentialsForSpeaker: Encodable {
     let psk: String
     let code: Int
 }
+
+struct SpeakersListResponse: Decodable, Identifiable {
+    let id: Int
+    let code: String
+    let token: String
+    let version: String
+}

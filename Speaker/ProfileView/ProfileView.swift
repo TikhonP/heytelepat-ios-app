@@ -22,47 +22,57 @@ struct ProfileView: View {
                     VStack {
                         VStack {
                             AsyncImage(
-                                url: getUrlProfileImage(), placeholder: { ProgressView() })
+                                url: getUrlProfileImage(),
+                                placeholder: { ProgressView() },
+                                image: { Image(uiImage: $0).resizable() }
+                            )
+                                .frame(width: 150, height: 150)
                                 .clipShape(Circle())
                                 .overlay(Circle().stroke(Color.white, lineWidth: 4))
                                 .shadow(radius: 10)
                                 .padding()
+                            
                             VStack {
-                                Text(profileViewModel.profileData!.data.name)
-                                    .bold()
-                                    .font(.title)
-                                Text(profileViewModel.profileData!.data.birthday)
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                            }.padding()
-                            List {
                                 HStack {
-                                    Text("Email")
+                                    Text(profileViewModel.profileData!.data.name)
                                         .bold()
-                                        .lineLimit(1)
-                                    Text(profileViewModel.profileData!.data.email ?? "не указан")
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                        .foregroundColor(.gray)
-                                        .lineLimit(1)
+                                        .font(.title)
+                                    Spacer()
                                 }
                                 HStack {
-                                    Text("Телефон")
-                                        .bold()
-                                        .lineLimit(1)
-                                    Text(profileViewModel.profileData!.data.phone ?? "не указан")
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
+                                    Text(profileViewModel.profileData!.data.birthday)
+                                        .font(.subheadline)
                                         .foregroundColor(.gray)
-                                        .lineLimit(1)
+                                    Spacer()
                                 }
-                            }.padding()
+                            }
+                            .padding()
+                            
+                            Form {
+                                Section {
+                                    HStack {
+                                        Text("Email")
+                                        Spacer()
+                                        Text(profileViewModel.profileData!.data.email ?? "не указан")
+                                            .foregroundColor(.gray)
+                                    }
+                                    HStack {
+                                        Text("Телефон")
+                                        Spacer()
+                                        Text(profileViewModel.profileData!.data.phone ?? "не указан")
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                
+                                Section {
+                                    Button (action: unauthButtonAction, label: {
+                                        Text("Выйти")
+                                            .bold()
+                                            .accessibility(label: Text("Выйти из аккаунта"))
+                                    })
+                                }
+                            }
                         }
-                        Spacer()
-                        Button (action: unauthButtonAction, label: {
-                            Text("Выйти")
-                                .bold()
-                                .accessibility(label: Text("Выйти из аккаунта"))
-                        })
-                        .padding()
                     }
                 }
             }

@@ -68,17 +68,25 @@ struct DoctorNavigationItem: View {
     
     var metaView: some View {
         VStack {
-            Text(doctor.doctor_name)
-                .font(.title)
-                .foregroundColor(Color.black)
-                .multilineTextAlignment(.leading)
-            Text(doctor.role)
-                .font(.callout)
-                .foregroundColor(Color.black)
-                .multilineTextAlignment(.leading)
-            Text(doctor.clinic.name)
-                .foregroundColor(Color.black)
-                .multilineTextAlignment(.leading)
+            HStack {
+                Text(doctor.doctor_name)
+                    .font(.title)
+                    .foregroundColor(Color.black)
+                Spacer()
+            }
+            HStack {
+                Text(doctor.role)
+                    .font(.callout)
+                    .foregroundColor(Color.black)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+            HStack {
+                Text(doctor.clinic.name)
+                    .foregroundColor(Color.black)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
         }
         .frame(width: 220, alignment: .leading)
     }
