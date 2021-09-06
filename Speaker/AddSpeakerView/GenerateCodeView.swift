@@ -19,42 +19,10 @@ struct GenerateCodeView: View, CustomPicker {
         ScrollView {
             ZStack {
                 VStack {
-                    HStack {
-                        doctorPart
-                        VStack {
-                            Text(doctor.clinic.name)
-                                .font(.headline)
-                                .foregroundColor(Color.black)
-                                .multilineTextAlignment(.leading)
-                            Text(doctor.role)
-                                .foregroundColor(Color.black)
-                                .multilineTextAlignment(.leading)
-                        }
-                        .frame(width: 220, alignment: .leading)
-                    }
-                    .padding()
-                    Divider()
-                    wifiSsidField
-                        .padding([.leading, .top, .trailing])
-                    PasswordFieldView(password: $generateCodeViewModel.password)
+                    generateCodeInformation
                         .padding()
-                    if generateCodeViewModel.showLoader {
-                        if generateCodeViewModel.playing {
-                            HStack{
-                                Text("Воспроизводится...")
-                                    .padding([.trailing])
-                                ProgressView()
-                            }
-                        } else {
-                            ProgressView()
-                        }
-                    } else {
-                        Button(action: generateButtonAction, label: {
-                            Text("Сгенерировать код.")
-                        })
-                        .disabled(generateButtonIsDisabled)
-                        .foregroundColor(generateButtonIsDisabled ? .gray : .blue)
-                    }
+                    Divider()
+                    wifiCredentialsForm
                     Spacer()
                 }
                 if presentPicker {
@@ -68,6 +36,50 @@ struct GenerateCodeView: View, CustomPicker {
         }
         .navigationBarTitle(doctor.short_name, displayMode: .inline)
         .alert(isPresented: $generateCodeViewModel.requestError, content: { Alert(title: Text("Ошибка запроса на сервер.")) })
+    }
+    
+    var wifiCredentialsForm: some View {
+        VStack {
+            wifiSsidField
+                .padding([.leading, .top, .trailing])
+            PasswordFieldView(password: $generateCodeViewModel.password)
+                .padding()
+            if generateCodeViewModel.showLoader {
+                if generateCodeViewModel.playing {
+                    HStack{
+                        Text("Воспроизводится...")
+                            .padding([.trailing])
+                        ProgressView()
+                    }
+                } else {
+                    ProgressView()
+                }
+            } else {
+                Button(action: generateButtonAction, label: {
+                    Text("Сгенерировать код.")
+                })
+                .disabled(generateButtonIsDisabled)
+                .foregroundColor(generateButtonIsDisabled ? .gray : .blue)
+            }
+        }
+    }
+    
+    var generateCodeInformation: some View {
+        HStack {
+            doctorPart
+            VStack {
+                HStack {
+                    Text(doctor.clinic.name)
+                        .font(.headline)
+                    Spacer()
+                }
+                HStack {
+                    Text(doctor.role)
+                    Spacer()
+                }
+            }
+            .frame(width: 220, alignment: .leading)
+        }
     }
     
     var doctorPart: some View {
@@ -95,7 +107,7 @@ struct GenerateCodeView: View, CustomPicker {
     }
     
     func generateButtonAction() {
-        generateCodeViewModel.generateCode(doctor: doctor)
+        generateCodeViewModel.generateCode(contract: doctor.contract)
     }
     
     func saveUpdates(_ newItem: String) {

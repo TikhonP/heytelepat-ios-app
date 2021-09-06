@@ -33,9 +33,12 @@ struct SpeakersView: View {
         VStack {
             NavigationView {
                 ScrollView {
-                    VStack(spacing: 30) {
-                        Text("Выберите врача, к которому привязать колонку.")
-                            .padding([.top])
+                    VStack {
+                        HStack {
+                            Text("Выберите врача, к которому привязать колонку.")
+                            Spacer()
+                        }
+                        .padding()
                         
                         ForEach(speakersViewModel.responseData!) { doctor in
                             NavigationLink(

@@ -37,7 +37,7 @@ struct CurrentSpeakers: View {
     var main: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 30) {
+                VStack {
                     ForEach(currentSpeakersViewModel.speakersData!) { speaker in
                         NavigationLink(
                             destination: SpeakerSettings(speaker: speaker),
@@ -56,19 +56,25 @@ struct SpeakerItem: View {
     let speaker: SpeakerData
     
     var body: some View {
-        HStack {
-            Image("speaker")
-                .resizable()
-                .frame(width: 80, height: 80)
-                .padding()
-            Text("Врач: \(speaker.doctorName)")
-                .padding()
+        VStack {
+            HStack {
+                Image("speaker")
+                    .resizable()
+                    .frame(width: 60, height: 60)
+                    .padding()
+                Text("Врач: \(speaker.doctorName)")
+                    .padding()
+            }
+            Divider()
+                .padding([.leading, .trailing])
         }
     }
 }
 
 struct SpeakerSettings: View {
     let speaker: SpeakerData
+    
+    @State private var showModal: Bool = false
     
     var body: some View {
         Form {
@@ -103,9 +109,72 @@ struct SpeakerSettings: View {
                         .foregroundColor(.gray)
                 }
             }
+            
+            Section {
+                Button("Cгенерировать пароль для Wi-Fi", action: {
+                    showModal.toggle()
+                })
+                .sheet(isPresented: $showModal, content: {
+                    WifiSettingsModalView(code: speaker.speaker.code, isPresented: $showModal)
+                })
+            }
         }
     }
 }
+
+
+struct WifiSettingsModalView: View {
+    let code: String
+    @Binding var isPresented: Bool
+    
+    @ObservedObject var generateCodeViewModel = GenerateCodeViewModel()
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Button("Отмена", action: { isPresented.toggle() })
+                Spacer()
+            }
+            .padding()
+            Form {
+                Section(header: Text("Настройки Wi-Fi")) {
+                    TextField("Имя сети (SSID)", text: $generateCodeViewModel.ssid)
+                    TextField("Пароль", text: $generateCodeViewModel.password)
+                }
+                
+                Section {
+                    if generateCodeViewModel.showLoader {
+                        if generateCodeViewModel.playing {
+                            HStack{
+                                Text("Воспроизводится...")
+                                    .padding([.trailing])
+                                ProgressView()
+                            }
+                        } else {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                            }
+                        }
+                    } else {
+                        Button(action: generateButtonAction, label: { Text("Сгенерировать код") })
+                            .disabled(generateButtonIsDisabled)
+                    }
+                }
+            }
+        }
+    }
+    
+    func generateButtonAction() {
+        generateCodeViewModel.generateCodeNoCreate(code: code)
+    }
+    
+    var generateButtonIsDisabled: Bool {
+        return generateCodeViewModel.ssid.isEmpty || generateCodeViewModel.ssid.isEmpty
+    }
+}
+
 
 struct CurrentSpeakers_Previews: PreviewProvider {
     static var previews: some View {

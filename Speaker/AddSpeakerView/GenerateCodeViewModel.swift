@@ -61,14 +61,39 @@ final class GenerateCodeViewModel: ObservableObject {
     
     private var audioPlayer: AVAudioPlayer?
     
-    func generateCode(doctor: doctorResponse) {
+    func generateCodeNoCreate(code: String) {
+        self.showLoader = true
+        
+        let credentialsForSpeaker = CredentialsForSpeaker(ssid: self.ssid, psk: self.password, code: Int(code) ?? 0)
+        
+        do {
+            let jsonData = try JSONEncoder().encode(credentialsForSpeaker)
+            let jsonString = String(data: jsonData, encoding: .utf8)!
+            
+            let wavDataUrl = "https://ggwave-to-file.ggerganov.com/?m=\(jsonString)&p=2"
+            print(wavDataUrl)
+            
+            checkBookFileExists(withLink: wavDataUrl){ [weak self] downloadedURL in
+                guard let self = self else { return }
+                self.playing = true
+                self.play(url: downloadedURL)
+                self.removeFile(url: downloadedURL)
+                self.showLoader = false
+            }
+        } catch {
+            print("Encodicng speaker credentials error \(error.localizedDescription)")
+            self.requestError = true
+        }
+    }
+    
+    func generateCode(contract: Int) {
         self.showLoader = true
         self.requestError = false
         self.playing = false
         
         do {
             print("heree")
-            let requestData = try JSONEncoder().encode(AddSpeakerRequest(api_token: medsengerApiKey!, contract: doctor.contract))
+            let requestData = try JSONEncoder().encode(AddSpeakerRequest(api_token: medsengerApiKey!, contract: contract))
             
             print(String(decoding: requestData, as: UTF8.self))
             
@@ -109,7 +134,7 @@ final class GenerateCodeViewModel: ObservableObject {
                         guard let self = self else { return }
                         self.playing = true
                         self.play(url: downloadedURL)
-                        //                        self.removeFile(url: downloadedURL)
+                        self.removeFile(url: downloadedURL)
                         self.showLoader = false
                     }
                 } catch {
