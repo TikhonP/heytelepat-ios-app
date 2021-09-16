@@ -15,7 +15,7 @@ struct doctorsResponse: Decodable {
 
 
 struct doctorResponse: Decodable, Identifiable {
-    var id: UUID? = UUID()
+    let id: UUID = UUID()
     
     let name: String
     let patient_name: String
@@ -26,7 +26,7 @@ struct doctorResponse: Decodable, Identifiable {
     let startDate: String
     let endDate: String
     let contract: Int
-    let photo_id: Int
+    let photo_id: Int?
     let archive: Bool
     let sent: Int
     let received: Int
@@ -37,6 +37,10 @@ struct doctorResponse: Decodable, Identifiable {
     let is_online: Bool
     // ...
     let role: String
+    
+    private enum CodingKeys : String, CodingKey {
+        case name, patient_name, doctor_name, specialty, clinic, mainDoctor, startDate, endDate, contract, photo_id, archive, sent, received, short_name, state, number, unread, is_online, role
+    }
 }
 
 extension doctorResponse {

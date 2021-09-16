@@ -40,19 +40,27 @@ struct SpeakersView: View {
                         }
                         .padding()
                         
-                        ForEach(speakersViewModel.responseData!) { doctor in
-                            NavigationLink(
-                                destination: GenerateCodeView(doctor: doctor),
-                                label: { DoctorNavigationItem(doctor: doctor) })
+                        ForEach(speakersViewModel.responseData!) {
+                            doctor in
+                            navigationView(doctor: doctor)
                         }
+                        .navigationBarTitle("Ваши врачи")
                     }
-                    .navigationBarTitle("Ваши врачи")
                 }
             }
         }
     }
 }
 
+struct navigationView: View {
+    let doctor: doctorResponse
+    
+    var body: some View {
+        NavigationLink(
+            destination: GenerateCodeView(doctor: doctor),
+            label: { DoctorNavigationItem(doctor: doctor) })
+    }
+}
 struct DoctorNavigationItem: View {
     let doctor: doctorResponse
     

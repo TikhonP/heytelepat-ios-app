@@ -25,22 +25,29 @@ func listOfDoctorsRequest() -> Array<doctorResponse>? {
     let (data, response, _) = URLSession.shared.syncRequest(with: urlRequest)
     
     guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let jsonData = data else {
-        #if DEBUG
         print("Unknown error while doctors request")
-        #endif
         return nil
     }
     
     do {
         let response = try JSONDecoder().decode(doctorsResponse.self, from: jsonData)
         return response.data
+    } catch let DecodingError.dataCorrupted(context) {
+        print(context)
+    } catch let DecodingError.keyNotFound(key, context) {
+        print("Key '\(key)' not found:", context.debugDescription)
+        print("codingPath:", context.codingPath)
+    } catch let DecodingError.valueNotFound(value, context) {
+        print("Value '\(value)' not found:", context.debugDescription)
+        print("codingPath:", context.codingPath)
+    } catch let DecodingError.typeMismatch(type, context)  {
+        print("Type '\(type)' mismatch:", context.debugDescription)
+        print("codingPath:", context.codingPath)
     } catch {
-        #if DEBUG
-        print("Decoding error: \(error.localizedDescription).")
-        print("Data \(String(decoding: jsonData, as: UTF8.self))")
-        #endif
-        return nil
+        print("error: ", error)
     }
+    
+    return nil
 }
 
 final class SpeakersViewModel: ObservableObject {

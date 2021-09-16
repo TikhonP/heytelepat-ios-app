@@ -67,6 +67,7 @@ final class CurrentSpeakersViewModel: ObservableObject {
             do {
                 let response = try JSONDecoder().decode(Array<SpeakersListResponse>.self, from: jsonData)
                 self.speakersData = []
+                
                 for r in response {
                     let speakerData = SpeakerData(speaker: r, contract: doctor.contract, clinic: doctor.clinic.name, doctorName: doctor.doctor_name)
                     self.speakersData?.append(speakerData)
@@ -84,5 +85,6 @@ final class CurrentSpeakersViewModel: ObservableObject {
             print("Error \(error.localizedDescription)")
             self.requestError = true
         }
+        
     }
 }
