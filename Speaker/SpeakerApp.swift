@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let speakerServerDomain = "194.87.234.236"
+let speakerServerDomain = "speaker.medsenger.ru"
 let medsengerApiDomain = "medsenger.ru"
 var medsengerApiKey: String? {
     return KeyChainTokenViewModel().token

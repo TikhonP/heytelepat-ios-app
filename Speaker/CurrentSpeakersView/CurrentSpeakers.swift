@@ -21,7 +21,16 @@ struct CurrentSpeakers: View {
                         Text("Вы не добавили ни одного устройства, перейдите во вкладку \"Добавить\" для инициализации нового устройства.")
                             .foregroundColor(.gray)
                     } else {
-                        main
+                        if #available(iOS 15.0, *) {
+                            NavigationView {
+                                ScrollView { scrollViewContents }
+                            }
+                            .refreshable { currentSpeakersViewModel.fetchData() }
+                        } else {
+                            NavigationView {
+                                ScrollView { scrollViewContents }
+                            }
+                        }
                     }
                 }
             }
@@ -34,21 +43,17 @@ struct CurrentSpeakers: View {
         }
     }
     
-    var main: some View {
-        NavigationView {
-            ScrollView {
-                VStack {
-                    ForEach(currentSpeakersViewModel.speakersData!) { speaker in
-                        NavigationLink(
-                            destination: SpeakerSettings(speaker: speaker),
-                            label: {
-                                SpeakerItem(speaker: speaker)
-                            })
-                    }
-                }
-                .navigationBarTitle("Ваши колонки")
+    var scrollViewContents: some View {
+        VStack {
+            ForEach(currentSpeakersViewModel.speakersData!) { speaker in
+                NavigationLink(
+                    destination: SpeakerSettings(speaker: speaker),
+                    label: {
+                        SpeakerItem(speaker: speaker)
+                    })
             }
         }
+        .navigationBarTitle("Ваши колонки")
     }
 }
 
@@ -114,9 +119,9 @@ struct SpeakerSettings: View {
                 Button("Cгенерировать пароль для Wi-Fi", action: {
                     showModal.toggle()
                 })
-                .sheet(isPresented: $showModal, content: {
-                    WifiSettingsModalView(code: speaker.speaker.code, isPresented: $showModal)
-                })
+                    .sheet(isPresented: $showModal, content: {
+                        WifiSettingsModalView(code: speaker.speaker.code, isPresented: $showModal)
+                    })
             }
         }
     }

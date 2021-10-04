@@ -97,7 +97,7 @@ final class GenerateCodeViewModel: ObservableObject {
             
             print(String(decoding: requestData, as: UTF8.self))
             
-            let url = URL(string: "http://\(speakerServerDomain)/mobile/api/v1/speaker/")!
+            let url = URL(string: "https://\(speakerServerDomain)/mobile/api/v1/speaker/")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")

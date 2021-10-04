@@ -48,7 +48,7 @@ final class CurrentSpeakersViewModel: ObservableObject {
         do {
             let requestData = try JSONEncoder().encode(AddSpeakerRequest(api_token: medsengerApiKey!, contract: doctor.contract))
             
-            let url = URL(string: "http://\(speakerServerDomain)/mobile/api/v1/speaker/")!
+            let url = URL(string: "https://\(speakerServerDomain)/mobile/api/v1/speaker/")!
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
