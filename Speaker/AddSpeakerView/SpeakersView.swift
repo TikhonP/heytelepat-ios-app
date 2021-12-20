@@ -14,8 +14,10 @@ struct SpeakersView: View {
     var body: some View {
         if networkMonitor.isConnected {
             ZStack {
-                if speakersViewModel.responseData == nil {
+                if (speakersViewModel.responseData == nil && !speakersViewModel.isResponseDataEmpty) {
                     CustomProgressView()
+                } else if speakersViewModel.isResponseDataEmpty {
+                    DoctorsEmpty()
                 } else {
                     speakers
                 }

@@ -14,8 +14,10 @@ struct CurrentSpeakers: View {
     var body: some View {
         if networkMonitor.isConnected {
             ZStack {
-                if currentSpeakersViewModel.speakersData == nil {
+                if (currentSpeakersViewModel.speakersData == nil &&  !currentSpeakersViewModel.doctorsIsEmpty) { 
                     CustomProgressView()
+                } else if currentSpeakersViewModel.doctorsIsEmpty {
+                    DoctorsEmpty()
                 } else {
                     if currentSpeakersViewModel.speakersData!.isEmpty {
                         Text("Вы не добавили ни одного устройства, перейдите во вкладку \"Добавить\" для инициализации нового устройства.")
@@ -56,6 +58,23 @@ struct CurrentSpeakers: View {
         .navigationBarTitle("Ваши колонки")
     }
 }
+
+struct DoctorsEmpty: View {
+    var body: some View {
+        VStack(alignment: .center) {
+            Text("У вас нет ни одного контракта.")
+                .font(.title2)
+                .fontWeight(.bold)
+            Text("Сначала откройте активный контракт с доктором.")
+                .font(.body)
+                .foregroundColor(Color.gray)
+                .multilineTextAlignment(.center)
+                .padding(.leading, 40)
+                .padding(.trailing, 40)
+        }
+    }
+}
+
 
 struct SpeakerItem: View {
     let speaker: SpeakerData

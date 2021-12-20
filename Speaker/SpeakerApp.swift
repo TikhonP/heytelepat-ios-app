@@ -5,7 +5,7 @@
 //  Created by Тихон on 19.08.2021.
 //
 
-import SwiftUI
+import SwiftUI 
 
 let speakerServerDomain = "speaker.medsenger.ru"
 let medsengerApiDomain = "medsenger.ru"

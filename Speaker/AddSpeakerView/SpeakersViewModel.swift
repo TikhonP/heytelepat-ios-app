@@ -53,6 +53,7 @@ func listOfDoctorsRequest() -> Array<doctorResponse>? {
 final class SpeakersViewModel: ObservableObject {
     @Published var responseData: Array<doctorResponse>?
     @Published var requestError: Bool = false
+    @Published var isResponseDataEmpty: Bool = false
     
     func fetchData() {
         if responseData == nil {
@@ -62,6 +63,9 @@ final class SpeakersViewModel: ObservableObject {
                 let response = listOfDoctorsRequest()
                 if response == nil {
                     self.requestError = true
+                }
+                else if response!.isEmpty {
+                    self.isResponseDataEmpty = true
                 } else {
                     self.responseData = response
                 }

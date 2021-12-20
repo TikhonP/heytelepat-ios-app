@@ -21,6 +21,7 @@ struct SpeakerData: Identifiable {
 final class CurrentSpeakersViewModel: ObservableObject {
     @Published var speakersData: Array<SpeakerData>?
     @Published var requestError: Bool = false
+    @Published var doctorsIsEmpty: Bool = false
     
     func fetchData() {
         if self.speakersData != nil && !(self.speakersData?.isEmpty ?? true) { return }
@@ -34,6 +35,9 @@ final class CurrentSpeakersViewModel: ObservableObject {
             if doctors == nil {
                 print("Doctors nil")
                 self.requestError = true
+                return
+            } else if doctors!.isEmpty {
+                self.doctorsIsEmpty = true
                 return
             }
             
